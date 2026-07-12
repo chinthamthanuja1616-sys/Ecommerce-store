@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>E-Commerce Store</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- Login / Logout Section -->
+    {% if session.get('username') %}
+        <p>
+            Welcome, <strong>{{ session['username'] }}</strong>!
+        </p>
+
+        <a href="{{ url_for('logout') }}">Logout</a>
+
+        {% if session.get('role') == 'admin' %}
+            |
+            <a href="{{ url_for('admin') }}">Admin Dashboard</a>
+        {% endif %}
+
+    {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+        |
+        <a href="{{ url_for('register') }}">Register</a>
+    {% endif %}
+
+
+    <h1>Welcome to My E-Commerce Store 🛍️</h1>
+
+    <p>Explore our products and shop online.</p>
+
+    <a href="{{ url_for('cart') }}">🛒 View Cart</a>
+
+
+    <h2>Products</h2>
+
+    <!-- Products from Database -->
+    {% if products %}
+
+        {% for product in products %}
+
+            <div>
+                <h3>{{ product.name }}</h3>
+
+                <p>{{ product.description }}</p>
+
+                <p>Price: ₹{{ product.price }}</p>
+
+               <a href="{{ url_for('add_to_cart', product_id=product.id) }}">
+    <button>Add to Cart</button>
+</a>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No products available.</p>
+
+    {% endif %}
+
+
+    <br><br>
+
+    {% if session.get('username') %}
+        <a href="{{ url_for('orders') }}">📦 My Orders</a>
+    {% endif %}
+
+</body>
+</html>
